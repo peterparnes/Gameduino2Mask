@@ -13,7 +13,7 @@
 #include <SPI.h>
 #include <GD2.h>
 
-const int maxlength = 200;
+const int maxlength = 400;
 const int initialLength = 10;
 int length; 
 const int height = 272;
@@ -22,7 +22,7 @@ int dir = 0; // 0 = right, 1 = up, 2  = left, 3 = down
 int tick;
 ; // how fast should we go
 const int initialTick = 30;
-int masken[maxlength][2];
+word masken[maxlength][2];
 const int initialFoodLife = 150;
 const int totalFoodLife = 1000;
 const int increaseLength = 5;
@@ -167,9 +167,6 @@ void loop() {
     }
   }
 
-  //if(cheat) {  // ?????
-  //  drawMasken();
-  //}
   drawMasken();
 
   updateFood(false);
@@ -178,12 +175,12 @@ void loop() {
 
   // drawFoodLeftRGB();
   
-   drawBorder();
+  drawBorder();
  
-    GD.swap();
+  GD.swap();
 
 
-  delay(tick);
+  // delay(tick);
   
 
 }
@@ -226,9 +223,6 @@ void addHead() {
 
   masken[length-1][0] = masken[length-2][0] + y;
   masken[length-1][1] = masken[length-2][1] + x; 
-
-  GD.ColorRGB(0xff0000);
-  GD.Vertex2ii(masken[length-1][0], masken[length-1][1]); 
 
   if(masken[length-1][0] == 0 || masken[length-1][0] == height-1 || masken[length-1][1] == 0 || masken[length-1][1] == width) {
     drawEnd(false); 
@@ -411,9 +405,11 @@ void drawMasken() {
   GD.PointSize(16 * 5); 
   GD.ColorRGB(0x00ff00);
   GD.Begin(POINTS);
-  for(int i = 0; i < length; i++) {
+  for(int i = 0; i < length-1; i++) {
     GD.Vertex2ii(masken[i][0], masken[i][1]);
   }
+  GD.ColorRGB(0xff0000);
+  GD.Vertex2ii(masken[length-1][0], masken[length-1][1]); 
 }
 
 void drawBorder() {
